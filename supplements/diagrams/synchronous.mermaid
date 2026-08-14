@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+
+    actor User
+    participant App as Web app
+    participant Svc as 3rd Party Service
+    participant DB@{ "type" : "database" } as Database
+
+    User->>+App: GET /query
+    App->>+App: f()
+    App->>+App: g()
+    App->>+Svc: h()
+    Svc-->>-App:
+    App->>+DB: SQL
+    DB-->>-App:
+    App-->>-App:
+    App-->>-App:
+    App-->>-User:

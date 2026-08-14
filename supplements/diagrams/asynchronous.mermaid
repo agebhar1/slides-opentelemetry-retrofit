@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+
+    participant TA@{ "type": "queue" } as Topic A
+    participant S1 as Service 1
+    participant TB@{ "type": "queue" } as Topic B
+    participant S2 as Service 2
+    participant TC@{ "type": "queue" } as Topic C
+
+    TA-)+S1: recv
+    S1-)+TB: send
+    TB--)-S1: ack
+    S1-->>-TA: ack
+
+    TB-)+S2: recv
+    S2-)+TC: send
+    TC--)-S2: ack
+    S2-->>-TB: ack
+
+    TA-)+S1: recv
+    S1-)+TB: send
+    TB--)-S1: ack
+    S1-->>-TA: ack

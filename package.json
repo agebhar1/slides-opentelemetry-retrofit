@@ -1,0 +1,29 @@
+{
+  "name": "opentelemetry-retrofit",
+  "author": {
+    "name": "Andreas Gebhardt",
+    "email": "agebhar1@googlemail.com"
+  },
+  "description": "Slides: OpenTelemetry - Retrofit a custom, legacy C middleware",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check build-only",
+    "build-only": "vite build",
+    "preview": "vite preview",
+    "type-check": "tsc",
+    "pdf": "node src/pdf.ts"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "npm-run-all2": "9.0.4",
+    "puppeteer": "25.16.0",
+    "reveal.js": "6.0.2",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  },
+  "allowScripts": {
+    "puppeteer": true
+  }
+}

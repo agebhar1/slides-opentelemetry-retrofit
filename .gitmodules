@@ -1,0 +1,3 @@
+[submodule "supplements/code"]
+	path = supplements/code
+	url = git@github.com:agebhar1/snippets.git

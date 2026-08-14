@@ -1,0 +1,54 @@
+import Reveal from "reveal.js"
+import Note from "reveal.js/plugin/notes"
+
+import "./style.css"
+
+function jsTrimWhitespace() {
+    const elements = document.getElementsByClassName('js:trim-whitespace')
+    for (let element of elements) {
+        let lines = element.innerHTML.split('\n')
+        element.innerHTML = lines
+            .map(line => line.trim())
+            .reduce((acc, it) => acc + (acc.length > 0 ? '\n' : '') + it)
+    }
+}
+
+function unhideSlides() {
+    const elements = document.querySelectorAll('[data-visibility="hidden"]')
+    for (let element of elements) {
+        element.removeAttribute('data-visibility')
+    }
+}
+
+window.addEventListener('load', async () => {
+    const urlSearchParams = new URLSearchParams(window.location.search)
+    const isPrintPdf = urlSearchParams.get('print-pdf') !== null
+    const isPrintable = urlSearchParams.get('printable') !== null
+    const editing = urlSearchParams.get('editing') !== null
+
+    jsTrimWhitespace()
+    if (editing || isPrintPdf) {
+        unhideSlides()
+    }
+    if (isPrintPdf && isPrintable) {
+        document.documentElement.classList.add('printable')
+        document.documentElement.style.setProperty('--code-background-color', 'white');
+        document.documentElement.style.setProperty('--code-box-shadow', '3px 3px 10px rgb(190 190 190)');
+        document.documentElement.style.setProperty('--code-color', 'black');
+        document.documentElement.style.setProperty('--r-main-color', 'black');
+        document.documentElement.style.setProperty('--r-heading-color', 'black');
+        document.documentElement.style.setProperty('--r-background-color', 'white');
+        document.getElementById("screenshot-tempo-trace")?.style.setProperty('margin-top', '-4em');
+    }
+
+    Reveal.configure({
+        pdfMaxPagesPerSlide: 1,
+        pdfSeparateFragments: false,
+        // showNotes: isPrintPdf ? 'separate-page' : false
+    });
+
+    return Reveal.initialize({
+        hash: true,
+        plugins: [Note]
+    })
+})

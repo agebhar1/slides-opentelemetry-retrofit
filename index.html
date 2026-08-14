@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>OpenTelemetry - Retrofit a custom, legacy C middleware</title>
+
+    <meta charset="utf-8"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css"/>
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css"/>
+    <link rel="stylesheet" href="node_modules/reveal.js/dist/theme/moon.css" id="theme"/>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1><img src="/images/open-telemetry.svg" alt="OpenTelemetry" style="width: 4em"/></h1>
+            <h2 class="ff-coventry-garden" style="text-transform: none">Retrofit</h2>
+            <h3 class="ff-coventry-garden" style="text-transform: none; font-size: inherit">a custom, legacy <code style="font-size: 1em">C</code> middleware</h3>
+        </section>
+
+        <section>
+            <section>
+                <h2>About Me</h2>
+            </section>
+            <section>
+                <h3>Andreas Gebhardt</h3>
+                <ul>
+                    <li>Software Engineer</li>
+                    <li>Open Source Enthusiast</li>
+                    <li>
+                        <div style="display: flex; align-items: center;">
+                            <span>agebhar1@</span>{&nbsp;
+                            <a target="_blank" href="https://www.github.com/agebhar1" style="top: 4px; width: 1em"><img
+                                    class="github-mark" alt="GitHub Logo"/></a>,&nbsp;
+                            <a target="_blank" href="https://bsky.app/profile/agebhar1.bsky.social" style="top: 4px">
+                                <svg style="width: 0.95em; color: var(--r-main-color); fill: currentcolor;"
+                                     viewBox="0 0 580 512" aria-hidden="true">
+                                    <g>
+                                        <path fill="currentColor"
+                                              d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.21C491.866-1.611 568-28.906 568 57.947c0 17.346-9.945 145.713-15.778 166.555-20.275 72.453-94.155 90.933-159.875 79.748C507.222 323.8 536.444 388.56 473.333 453.32c-119.86 122.992-172.272-30.859-185.702-70.281-2.462-7.227-3.614-10.608-3.631-7.733-.017-2.875-1.169.506-3.631 7.733-13.43 39.422-65.842 193.273-185.702 70.281-63.111-64.76-33.89-129.52 80.986-149.071-65.72 11.185-139.6-7.295-159.875-79.748C9.945 203.659 0 75.291 0 57.946 0-28.906 76.135-1.612 123.121 33.664Z"></path>
+                                    </g>
+                                </svg>
+                            </a>&nbsp;}
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <h2>Outline</h2>
+            <ul>
+                <li>What is <img src="/images/open-telemetry.svg" alt="OpenTelemetry"
+                                 style="width: 4em; margin: 0; vertical-align: center"/>?
+                </li>
+                <li>Setting the Scene</li>
+                <li>Retrofit</li>
+                <li>Show me Code</li>
+            </ul>
+        </section>
+
+        <section>
+            <section>
+                <h2>OpenTelemetry</h2>
+            </section>
+            <section>
+                <h3>What is OpenTelemetry?</h3>
+            </section>
+            <section>
+                <ul style="list-style-position: inside;">
+                    <li style="list-style: none;">
+                        <figure>
+                            <blockquote cite="https://opentelemetry.io/docs/what-is-opentelemetry/">
+                                <!--
+                                Observability: ability to measure/understand system's internal state by examining its (external) outputs
+                                -->
+                                <p>
+                                    An observability framework and toolkit designed to facilitate the generation, export
+                                    and collection of telemetry data such as traces, metrics and logs.
+                                </p>
+                            </blockquote>
+                            <figcaption>
+                                <cite><a href="https://opentelemetry.io/docs/what-is-opentelemetry/" target="_blank">opentelemetry.io</a></cite>
+                            </figcaption>
+                        </figure>
+                    </li>
+                    <li style="margin-top: 2em;">Open Source</li>
+                    <li>vendor/tool-agnostic</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Main Components</h3>
+                <ul>
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/" target="_blank">
+                        Specification</a> API, SDK, Data <span class="badge badge-version">1.62.0 <span style="font-size: smaller; vertical-align: super">&starf;</span></span>
+                    </li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otlp/" target="_blank">
+                        Protocol</a> (OTLP) <span class="badge badge-version">1.11.1 <span style="font-size: smaller; vertical-align: super">&starf;</span></span>
+                    </li>
+                    <li><a href="https://opentelemetry.io/docs/specs/semconv/" target="_blank">
+                        Semantic Conventions</a> <span class="badge badge-version">1.44.0 <span style="font-size: smaller; vertical-align: super">&starf;</span></span>
+                    </li>
+                    <li>Language APIs & SDKs</li>
+                    <li><a href="https://opentelemetry.io/ecosystem/registry/" target="_blank">Library Ecosystem</a><span style="font-size: small; vertical-align: super">&dagger;</span>
+                    </li>
+                    <li><a href="https://opentelemetry.io/docs/collector/">Collector</a></li>
+                    <li style="list-style: none; font-size: small; text-align: right; margin-top: 2em">
+                        <span style="font-size: smaller; vertical-align: super">&starf;</span> 2026/10/24
+                        <br>
+                        <span style="font-size: smaller; vertical-align: super">&dagger;</span><a href="https://github.com/open-telemetry/opentelemetry.io/issues/11377">retirement planed</a><br>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3><a href="https://opentelemetry.io/docs/concepts/signals/" target="_blank">Signals</a></h3>
+                <!--
+                https://www.elastic.co/blog/3-pillars-of-observability
+
+                * What are metrics? (WHAT is happening?)
+                * What are logs? (WHY is it happening?)
+                * What are traces? (WHERE is it happening?)
+                -->
+                <ul class="explanation">
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/metrics" target="_blank">Metrics</a></span>
+                        <span>measurement captured at runtime</span>
+                    </li>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/logs" target="_blank">Logs</a></span>
+                        <span>recording of an event</span>
+                    </li>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/traces/" target="_blank">Traces</a></span>
+                        <span>path of a request</span>
+                    </li>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/baggage/" target="_blank">Baggage</a></span>
+                        <span>contextual information passed between signals</span>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h4><a href="https://opentelemetry.io/docs/specs/otel/overview/#traces" target="_blank">Traces</a></h4>
+                <ul>
+                    <li>implicitly defined by spans</li>
+                    <li>trace &asymp; DAG of spans</li>
+                    <li>req. concept of <span style="font-style: italic">Context Propagation</span></li>
+                </ul>
+            </section>
+            <section>
+                <h4><a href="https://opentelemetry.io/docs/specs/otel/overview/#spans" target="_blank">Spans</a></h4>
+                <!-- unit of work/operation with state defined by -->
+                <ul>
+                    <li>name</li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/overview/#spancontext" target="_blank">SpanContext</a>
+                    </li>
+                    <li>parent's span identifier <code style="font-size: 0.5em">(0..1)</code></li>
+                    <li>SpanKind</li>
+                    <li>start/finish timestamp</li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/common/#attribute"
+                           target="_blank">Attribute</a>s <code style="font-size: 0.5em">[(k/v)]*</code>
+                    </li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/overview/#links-between-spans"
+                           target="_blank">Link</a>s to causally-related spans&nbsp;
+                        <code style="font-size: 0.5em">(0..*)</code>
+                    </li>
+                    <li>
+                        <a href="https://opentelemetry.io/docs/specs/semconv/general/events/">Events</a> <code
+                            style="font-size: 0.5em">(timestamp, name, attribute*)*</code></li>
+                    <li>Status</li>
+                </ul>
+            </section>
+            <section>
+                <div style="display: flex; gap: 0.25em">
+                    <div style="flex: 1">
+                        <h4><a href="https://opentelemetry.io/docs/specs/semconv/" target="_blank">Semantic Conventions</a></h4>
+                        <ul style="font-size: 0.6em">
+                            <li><a href="https://opentelemetry.io/docs/specs/semconv/db/" target="_blank">Database</a></li>
+                            <li><a href="https://opentelemetry.io/docs/specs/semconv/http/" target="_blank">HTTP</a></li>
+                            <li><a href="https://opentelemetry.io/docs/specs/semconv/messaging/" target="_blank">Messaging</a></li>
+                            <li>GenAI
+                                <span style="font-size: small; vertical-align: super"><a href="https://github.com/open-telemetry/semantic-conventions-genai" target="_blank">moved</a>, &starf;</span>
+                            </li>
+                            <li>…</li>
+                        </ul>
+                    </div>
+                    <div style="flex: 1">
+                        <h5><a href="https://opentelemetry.io/docs/specs/semconv/registry/attributes/" target="_blank">Attribute Registry</a></h5>
+                        <h6 style="font-size: smaller">Attribute Examples</h6>
+                        <table style="font-size: 0.3em">
+                            <tr>
+                                <th>Key</th>
+                                <th>Stability</th>
+                                <th>Value Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>k8s.cluster.name</code></td>
+                                <td><code>stable</code></td>
+                                <td><code>string</code></td>
+                                <td>The name of the cluster.</td>
+                            </tr>
+                            <tr>
+                                <td><code>db.query.text</code></td>
+                                <td><code>stable</code></td>
+                                <td><code>string</code></td>
+                                <td>The database query being executed.</td>
+                            </tr>
+                            <tr>
+                                <td><code>http.request.method</code></td>
+                                <td><code>stable</code></td>
+                                <td><code>string</code></td>
+                                <td>HTTP request method.</td>
+                            </tr>
+                            <tr>
+                                <td><code>messaging.destination.name</code></td>
+                                <td><code>development</code></td>
+                                <td><code>string</code></td>
+                                <td>The message destination name.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div style="font-size: small; text-align: right; margin-top: 5em">
+                    <span style="font-size: smaller; vertical-align: super">&starf;</span>
+                    <a style="font-size: smaller" href="https://opentelemetry.io/blog/2026/genai-observability/" target="_blank">Inside the LLM Call: GenAI Observability with OpenTelemetry</a>
+                </div>
+            </section>
+            <section>
+                <h5>SpanContext</h5>
+                <div style="font-size: smaller; margin-bottom: 0.5em">conforms to <a
+                        href="https://www.w3.org/TR/trace-context/" target="_blank">W3C Trace Context</a></div>
+                <ul class="explanation">
+                    <li>
+                        <span><code>TraceId</code></span>
+                        <span>16-bytes; worldwide unique; group all spans for specific trace</span>
+                    </li>
+                    <li>
+                        <span><code>SpanId</code></span>
+                        <span>8-bytes; globally unique</span>
+                    </li>
+                    <li>
+                        <span><code>TraceFlags</code></span>
+                        <span>8-bit mask; options for a trace: Sampled, Random</span>
+                    </li>
+                    <li>
+                        <span><code>TraceState</code></span>
+                        <span>k/v pairs; vendor specific; see
+                        <a href="https://www.w3.org/TR/trace-context/" target="_blank">W3C Trace Context</a></span>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h4>Baggage</h4>
+                <ul>
+                    <li>k/v store</li>
+                    <li>propagated alongside context
+                        <br>&rightarrow; available across service boundaries
+                    </li>
+                    <li>&#x26A0; security</li>
+                    <li>&#x2260; { span, metrics, logs } attributes</li>
+                    <li>
+                        <a href="https://opentelemetry.io/docs/concepts/signals/baggage/#what-should-otel-baggage-be-used-for">what
+                            it should it be used for?</a></li>
+                </ul>
+            </section>
+            <section>
+                <h3><a href="https://opentelemetry.io/docs/concepts/context-propagation/">Context Propagation</a></h3>
+                <ul>
+                    <li>enables distributed tracing</li>
+                    <li>aim: correlate signals with each other</li>
+                    <li>propagation &rarr; moves context between services/processes</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Synchronous Trace Example</h3>
+                <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                    <img src="/images/synchronous.excalidraw.png" alt="Synchronous Trace Example"/>
+                </div>
+            </section>
+            <section>
+                <h3>Asynchronous Trace Example</h3>
+                <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                    <img src="/images/asynchronous.excalidraw.png" alt="Asynchronous Trace Example"/>
+                </div>
+            </section>
+            <section>
+                <h3>History</h3>
+                <ul>
+                    <li>merge of <a href="https://opentracing.io/">OpenTracing</a> and <a href="https://opencensus.io/">OpenCensus</a>
+                    </li>
+                    <li>May 7, 2019 &mdash; accepted to <a href="https://www.cncf.io/projects/opentelemetry/">CNCF</a>
+                        <span class="badge">Cloud Native Computing Foundation</span>
+                    </li>
+                    <li>August 26, 2021 &mdash; Incubating maturity level</li>
+                    <li>May 11, 2026 &mdash; Graduated maturity level</li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Setting the Scene</h2>
+            </section>
+            <section>
+                <h3 class="ff-coventry-garden" style="text-transform: none; font-size: inherit">Once upon a time...</h3>
+            </section>
+            <section>
+                <h3 class="ff-coventry-garden" style="text-transform: none; font-size: inherit">a custom, legacy <code style="font-size: 1em">C</code> middleware</h3>
+            </section>
+            <section>
+                <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                    <img src="/images/context.excalidraw.png" alt="Context"/>
+                </div>
+                <br>
+                <ul>
+                    <li>queue like middleware</li>
+                    <li><code style="font-size: 1em">C</code> code base <span style="font-size: small; vertical-align: super">&approx; 32 years</span></li>
+                    <li>single threaded, (Sun) TI-RPC <span style="font-size: small; vertical-align: super">&starf;</span></li>
+                    <!--<li>single host (not distributed)</li>-->
+                    <li>dynamic (client) library</li>
+                    <li style="list-style: none; font-size: small; text-align: right; margin-top: 2em">
+                        <span style="font-size: smaller; vertical-align: super">&starf;</span>&nbsp;in the following, replaced by UNIX domain socket
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>Middleware API</h3>
+                <ul>
+                    <li><code>connect()</code>, <code>disconnect()</code></li>
+                    <li>shared I/O buffer/-size <span style="font-size: small; vertical-align: super">single threaded</span></li>
+                    <li><code>read(queue)</code></li>
+                    <li><code>write(queue)</code></li>
+                </ul>
+            </section>
+            <section>
+                <div style="display: flex; gap: 0.25em">
+                    <div style="flex: 1">
+                        <h4><code>read(queue)</code></h4>
+                        <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                            <img src="/images/api-read.excalidraw.png" alt="API read(queue)"/>
+                        </div>
+                    </div>
+                    <div style="flex: 1">
+                        <h4><code>write(queue)</code></h4>
+                        <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                            <img src="/images/api-write.excalidraw.png" alt="API write(queue)"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h3>Challenges</h3>
+            </section>
+            <section>
+                <ul>
+                    <li>mission-critical</li>
+                    <li>c/s single threaded</li>
+                    <li>no metadata/headers support</li>
+                    <li>message can't be changed</li>
+                    <li>context propagation?</li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Retrofit</h2>
+            </section>
+            <section>
+                <h3>Idea</h3>
+                <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                    <img src="/images/otel-gateway-sketch.excalidraw.png" alt="OpenTelemetry Gateway Sketch"/>
+                </div>
+            </section>
+            <section>
+                <div style="display: flex; gap: 0.25em">
+                    <div style="flex: 1">
+                        <h4>Assumptions</h4>
+                        <ul style="font-size: smaller">
+                            <li>80/20 approach</li>
+                            <li><code>read(queue) == write(queue)</code></li>
+                            <li>next read finishes prev. one<br>
+                                <code>[ read(), write(), …, write() ],<br>[ read(), … ]</code>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="flex: 1">
+                        <h4>Key Facts</h4>
+                        <ul style="font-size: smaller">
+                            <li>keep middleware server & message untouched</li>
+                            <li>extend client by async send thread (w/ timeout)</li>
+                            <li>add gateway service</li>
+                            <li>IPC via Unix domain socket</li>
+                            <li>keep span context in k/v store</li>
+                            <li>identified by<br>
+                                <code style="font-size: 0.5em">key(q, msg) := q &compfn; hash(msg + …)</code>
+                            </li>
+                            <li>
+                                context propagation<br>
+                                <code style="font-size: 0.5em">ctx[key(q<sub>w</sub>, msg<sub>w</sub>)] := ctx[key(q<sub>r</sub>, msg<sub>r</sub>)]</code> or
+                                <code style="font-size: 0.5em">ctx[key(q<sub>w</sub>, msg<sub>w</sub>)] := new SpanContext</code>
+                            </li>
+                            <li style="list-style: none; margin-top: 1em">
+                                <table>
+                                    <tr>
+                                        <td><code>q</code></td>
+                                        <td>queue</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>msg</code></td>
+                                        <td>message (bytes)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>ctx</code></td>
+                                        <td>span context</td>
+                                    </tr>
+                                </table>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div style="display: flex; gap: 0.25em">
+                    <div style="flex: 1">
+                        <h4><code>read(queue)</code></h4>
+                        <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                            <img src="/images/api-read-extended.excalidraw.png" alt="API read(queue)"/>
+                        </div>
+                    </div>
+                    <div style="flex: 1">
+                        <h4><code>write(queue)</code></h4>
+                        <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                            <img src="/images/api-write-extended.excalidraw.png" alt="API write(queue)"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h4>Client Threading</h4>
+                <div style="display: flex; gap: 0.25em">
+                    <div style="flex: 1">
+                        <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                            <img style="width: 14em" src="/images/client-threading.excalidraw.png" alt="client threading"/>
+                        </div>
+                    </div>
+                    <div style="flex: 1">
+                        <h5><code>pthread.h</code></h5>
+                        <ul style="font-size: smaller; display: block;">
+                            <li><code>pthread_mutex_{timed}lock/pthread_mutex_unlock</code></li>
+                            <li><code>pthread_cond_{timed}wait</code></li>
+                            <li><code>pthread_cond_signal</code></li>
+                        </ul>
+                        <h5 style="margin-top: 1em"><code>stdatomic.h</code></h5>
+                        <ul style="font-size: smaller; display: block;">
+                            <li><code>atomic_fetch_add_explicit</code></li>
+                            <li><code>atomic_load_explicit</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Demo / Proof-of-Concept</h2>
+                <pre class="js:trim-whitespace">
+                    $ cd supplements/code/opentelemetry/retrofit/
+                    $ docker compose --profile '*' up --quiet-pull --detach --build
+                    …
+
+                    $ until docker compose exec --no-tty middleware curl --silent --fail http://tempo:3200/ready; do \
+                    &nbsp;   sleep 1; \
+                    &nbsp; done
+
+                    $
+                    ready
+
+                    $ open http://localhost:3000/explore
+
+                    $ docker compose logs middleware
+                    middleware-1  | listening on /tmp/middleware.sock
+
+                    $ docker compose exec middleware bash
+                    5334c6a916aa:~ OTEL_SERVICE_NAME=clientTwo client -r one -w two 1>clientTwo.log 2>&1 &
+                    5334c6a916aa:~ OTEL_SERVICE_NAME=clientThree client -r two -w three -d 1 1>clientThree.log 2>&1 &
+                    5334c6a916aa:~ seq 2 | OTEL_SERVICE_NAME=clientOne client -w one
+                    (stdin [getline]) -> one
+
+                    5334c6a916aa:~$ curl --silent --fail http://tempo:3200/api/search | jq
+                    …
+
+                    5334c6a916aa:~$ kill $(jobs -p)
+                    5334c6a916aa:~$ exit
+                    $ docker compose --profile '*' down --volumes
+                </pre>
+            </section>
+            <section>
+                <img id="screenshot-tempo-trace" style="height: 30vh" src="/images/screenshot-tempo-trace.png" alt="Tempo trace"/>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Thank You</h2>
+            </section>
+            <section>
+                <h2>Questions?</h2>
+            </section>
+        </section>
+
+        <section>
+            <h2>Resources</h2>
+            <ul style="font-size: smaller;">
+                <li><a target="_blank" href="https://opentelemetry.io/">OpenTelemetry</a></li>
+                <li>What is OpenTelemetry?
+                    <ul>
+                        <li><a target="_blank" href="https://opentelemetry.io/docs/what-is-opentelemetry/">OpenTelemetry</a></li>
+                        <li><a target="_blank" href="https://newrelic.com/blog/observability/what-is-observability">New Relic</a></li>
+                        <li><a target="_blank" href="https://www.elastic.co/what-is/observability/">Elastic</a></li>
+                        <li><a target="_blank" href="https://www.dynatrace.com/news/blog/what-is-observability-2/">Dynatrace</a></li>
+                        <li>
+                            <a target="_blank" href="https://grafana.com/docs/grafana-cloud/learn-and-build/get-started/learn/what-is-observability/">Grafana</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a target="_blank" href="https://www.elastic.co/blog/3-pillars-of-observability">The 3 pillars of observability:
+                    Unified logs, metrics, and traces</a></li>
+                <!-- https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder -->
+                <li><a target="_blank" href="https://signoz.io/comparisons/opentelemetry-trace-vs-span/">OpenTelemetry - Understanding
+                    Traces vs. Spans</a></li>
+                <!-- TODO
+                    * https://embrace.io/blog/opentelemetry-challenges-handling-long-running-spans/
+                    * https://medium.com/hiver-engineering/distributed-tracing-for-asynchronous-workflows-using-opentelemetry-67e701685134
+                -->
+                <li>Font <a target="_blank" href="https://www.fontspace.com/coventry-garden-font-f9188"><span class="ff-coventry-garden">Coventry Garden</span></a></li>
+                <li><a href="https://excalidraw.com/" target="_blank">Excalidraw</a></li>
+            </ul>
+        </section>
+
+    </div>
+</div>
+<!-- https://github.com/astefanutti/decktape -->
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

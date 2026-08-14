@@ -1,0 +1,121 @@
+:root {
+    --code-background-color: #300a24;
+    --code-color: white;
+    --code-box-shadow: 3px 3px 10px rgba(146, 146, 146, 0.15);
+    --list-style: outside url('/icons/open-telemetry-gray.svg');
+}
+
+@font-face {
+    font-family: 'Coventry Garden';
+    src: url('/fonts/CoventryGardenNf-xx8O.ttf');
+}
+
+figure {
+    figcaption {
+        text-align: left;
+        margin: auto calc(2.5 * var(--r-block-margin));
+        font-size: 0.5em;
+
+        & cite {
+            font-size: smaller;
+
+            ::before {
+                content: '- ';
+            }
+
+        }
+    }
+}
+
+code {
+    font-size: 0.65em;
+}
+
+.reveal ul {
+    /*font-size: 0.75em;*/
+    list-style: var(--list-style)
+}
+
+.reveal blockquote {
+    margin-left: 1em;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 0.85em;
+    border-left: 0.2em solid #ffffff0d;
+    box-shadow: none;
+    border-radius: 0.1em 0 0 0.1em;
+}
+
+.reveal table {
+    margin: 0;
+    font-size: 0.65em;
+}
+
+.reveal table th,
+.reveal table td {
+    text-align: left;
+    border-bottom: 0;
+    padding: 0.1em 0.2em
+}
+
+.reveal pre {
+    background-color: var(--code-background-color);
+    color: var(--code-color);
+    box-shadow: var(--code-box-shadow);
+    border-radius: 10px;
+    font-size: 0.3em;
+    padding: 0.75em;
+}
+
+.github-mark {
+    content: url('/icons/github-mark-white.png');
+}
+
+.printable .github-mark {
+    content: url('/icons/github-mark.png');
+}
+
+.print-pdf .reveal a {
+    text-decoration: underline;
+}
+
+.badge {
+    font-size: 0.25em;
+    position: relative;
+    text-align: center;
+    top: 1em;
+    vertical-align: top;
+}
+
+.badge-version {
+    background-color: red;
+    border-radius: 4px;
+    color: white;
+    margin: 0 1em 0 1em;
+    padding: 0.1em 0.3em;
+}
+
+.explanation {
+    span:first-child {
+        display: inline-block;
+        width: 51%;
+    }
+
+    span + span {
+        display: inline-block;
+        border-left: 1px solid;
+        border-radius: 0.1em 0 0 0.1em;
+        font-size: x-small;
+        margin: 0;
+        padding: 0.1em 0.3em;
+        vertical-align: super;
+        width: calc(50% - 2em);
+        word-break: break-word;
+        word-wrap: revert;
+    }
+}
+
+.ff-coventry-garden {
+    font-family: 'Coventry Garden' !important;
+}
+
