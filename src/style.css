@@ -1,4 +1,72 @@
+:root {
+    --list-style: outside url(public/icons/open-telemetry-gray.svg);
+}
+
+figure {
+    figcaption {
+        text-align: right;
+        margin: auto calc(4 * var(--r-block-margin));
+        font-size: 0.5em;
+
+        & cite {
+            font-size: smaller;
+
+            ::before {
+                content: '»';
+            }
+
+            ::after {
+                content: '«';
+
+            }
+        }
+    }
+}
+
+.reveal ul {
+    /*font-size: 0.75em;*/
+    list-style: var(--list-style)
+}
+
+.reveal blockquote {
+    margin-left: 1em;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 0.85em;
+    border-left: 0.3em solid #ffffff0d;
+    box-shadow: none;
+    border-radius: 0.1em 0 0 0.1em;
+}
+
 .github-mark {
     content: url(public/icons/github-mark-white.png);
     width: 0.95em;
+}
+
+.badge {
+    font-size: 0.25em;
+    position: relative;
+    text-align: center;
+    top: 1em;
+    vertical-align: top;
+}
+
+.badge-version {
+    background-color: red;
+    border-radius: 4px;
+    color: white;
+    margin: 0 1em 0 1em;
+    padding: 0.1em 0.3em;
+}
+
+.explanation {
+    span + span {
+        /*border-bottom: 0.1em solid;*/
+        border-left: 0.1em solid;
+        border-radius: 0.1em 0 0 0.1em;
+        font-size: x-small;
+        margin-left: 1em;
+        padding: 0.1em 0.3em;
+        vertical-align: super;
+    }
 }
