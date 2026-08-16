@@ -16,7 +16,7 @@
 <div class="reveal">
     <div class="slides">
         <section>
-            <h1><img src="public/open-telemetry.svg" alt="OpenTelemetry" style="width: 4em"/></h1>
+            <h1><img src="/open-telemetry.svg" alt="OpenTelemetry" style="width: 4em"/></h1>
             <h2>Retrofit</h2>
         </section>
 
@@ -80,7 +80,7 @@
                                 </p>
                             </blockquote>
                             <figcaption>
-                                <cite><a href="">opentelemetry.io</a></cite>
+                                <cite><a href="https://opentelemetry.io/docs/what-is-opentelemetry/" target="_blank">opentelemetry.io</a></cite>
                             </figcaption>
                         </figure>
                     </li>
@@ -98,14 +98,17 @@
             <section>
                 <h3>Main Components</h3>
                 <ul>
-                    <li><a href="https://opentelemetry.io/docs/specs/otel/">Specification</a> API, SDK, Data<span
-                            class="badge badge-version">1.60.0</span></li>
-                    <li><a href="https://opentelemetry.io/docs/specs/otlp/">Protocol</a> (OTLP)<span
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/" target="_blank">Specification</a> API, SDK,
+                        Data<span
+                                class="badge badge-version">1.60.0</span></li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otlp/" target="_blank">Protocol</a> (OTLP)<span
                             class="badge badge-version">1.11.0</span></li>
-                    <li><a href="https://opentelemetry.io/docs/specs/semconv/">Semantic Conventions</a><span
+                    <li><a href="https://opentelemetry.io/docs/specs/semconv/" target="_blank">Semantic
+                        Conventions</a><span
                             class="badge badge-version">1.44.0</span></li>
                     <li>API & SDKs</li>
-                    <li><a href="https://opentelemetry.io/ecosystem/registry/">Library Ecosystem</a></li>
+                    <li><a href="https://opentelemetry.io/ecosystem/registry/" target="_blank">Library Ecosystem</a>
+                    </li>
                     <!-- implements instrumentation -->
                     <li><a href="https://opentelemetry.io/docs/collector/">Collector</a></li><!-- proxy -->
                 </ul>
@@ -114,22 +117,61 @@
                 <h3>Signals</h3>
                 <!-- https://opentelemetry.io/docs/concepts/signals/ -->
                 <ul class="explanation">
-                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/traces/">Traces</a></span>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/traces/"
+                                 target="_blank">Traces</a></span>
                         <span>path of a request</span>
                     </li>
-                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/metrics">Metrics</a></span>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/metrics"
+                                 target="_blank">Metrics</a></span>
                         <span>measurement captured at runtime</span>
                     </li>
-                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/logs">Logs</a></span>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/logs"
+                                 target="_blank">Logs</a></span>
                         <span>recording of an event</span>
                     </li>
-                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/baggage/">Baggage</a></span>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/baggage/"
+                                 target="_blank">Baggage</a></span>
                         <span>contextual information passed between signals</span>
                     </li>
                 </ul>
             </section>
             <section>
-                <h4>Traces</h4>
+                <h4><a href="https://opentelemetry.io/docs/specs/otel/overview/#traces" target="_blank">Traces</a></h4>
+                <ul>
+                    <li>set of events across various components</li>
+                    <li>implicitly defined by spans</li>
+                    <li>trace &asymp; direct acyclic graph of spans</li>
+                    <li>requeries concept of context propagation</li>
+                </ul>
+            </section>
+            <section>
+                <h4><a href="https://opentelemetry.io/docs/specs/otel/overview/#spans" target="_blank">Spans</a></h4>
+                <!-- unit of work with state defined by -->
+                <ul>
+                    <li>operation name</li>
+                    <li>start/finish timestamp</li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/common/#attribute"
+                           target="_blank">Attribute</a>s <code>(0..*)</code>
+                    </li>
+                    <li>events <code>(0..*)</code></li><!-- tuple of timestamp, name, attribute(s) -->
+                    <li>parent's Span identifier <code>(0..1)</code></li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/overview/#links-between-spans"
+                           target="_blank">Link</a>s to causally-related spans <code>(0..*)</code>
+                    </li>
+                    <li><a href="" target="_blank">SpanContext</a>
+                        <ul>
+                            <li>TraceId (worldwide unique, group all spans for specific trace)</li>
+                            <li>SpanId (globally unique)</li>
+                            <li>TraceFlags (options for a trace)</li>
+                            <li>Tracestate (k/v pairs; see <a href="https://www.w3.org/TR/trace-context/" target="_blank">W3C Trace Context</a>)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <!-- TODO trace example https://opentelemetry.io/docs/specs/otel/overview/#traces -->
+            <section>
+                <!-- https://opentelemetry.io/docs/concepts/context-propagation/ -->
+                <h3>Context Propagation</h3>
             </section>
             <section>
                 <!-- TODO -->
@@ -182,6 +224,8 @@
                 <li><a href="https://github.com/open-telemetry/opentelemetry-collector-contrib">OpenTelemetry Collector
                     Contrib</a></li>
                 <!-- https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder -->
+                <li><a href="https://signoz.io/comparisons/opentelemetry-trace-vs-span/">OpenTelemetry - Understanding
+                    Traces vs. Spans</a></li>
             </ul>
         </section>
 

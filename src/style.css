@@ -1,5 +1,5 @@
 :root {
-    --list-style: outside url(public/icons/open-telemetry-gray.svg);
+    --list-style: outside url(/icons/open-telemetry-gray.svg);
 }
 
 figure {
@@ -39,7 +39,7 @@ figure {
 }
 
 .github-mark {
-    content: url(public/icons/github-mark-white.png);
+    content: url(/icons/github-mark-white.png);
     width: 0.95em;
 }
 
