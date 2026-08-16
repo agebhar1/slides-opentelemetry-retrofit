@@ -67,8 +67,8 @@
                 <h3>What is OpenTelemetry?</h3>
             </section>
             <section>
-                <ul style="list-style: none;">
-                    <li>
+                <ul>
+                    <li style="list-style: none;">
                         <figure>
                             <blockquote cite="https://opentelemetry.io/docs/what-is-opentelemetry/">
                                 <!--
@@ -84,8 +84,8 @@
                             </figcaption>
                         </figure>
                     </li>
-                    <li>Open Source</li>
-                    <li>vendor- and tool-agnostic</li>
+                    <li style="margin-top: 2em;">Open Source</li>
+                    <li>vendor/tool-agnostic</li>
                 </ul>
             </section>
             <!--
@@ -111,6 +111,16 @@
                     </li>
                     <!-- implements instrumentation -->
                     <li><a href="https://opentelemetry.io/docs/collector/">Collector</a></li><!-- proxy -->
+                </ul>
+            </section>
+            <section>
+                <!-- https://opentelemetry.io/docs/concepts/context-propagation/ -->
+                <h3>Context Propagation</h3>
+                <ul>
+                    <!-- TODO <li>context</li>-->
+                    <li>correlate signals with each other</li>
+                    <!-- https://www.w3.org/TR/trace-context/ Trace Context - W3C Recommendation -->
+                    <!-- https://www.w3.org/TR/baggage/ Propagation format for distributed context: Baggage - W3C Candidate Recommendation -->
                 </ul>
             </section>
             <section>
@@ -141,12 +151,12 @@
                     <li>set of events across various components</li>
                     <li>implicitly defined by spans</li>
                     <li>trace &asymp; direct acyclic graph of spans</li>
-                    <li>requeries concept of context propagation</li>
+                    <li>requires concept of context propagation</li>
                 </ul>
             </section>
             <section>
                 <h4><a href="https://opentelemetry.io/docs/specs/otel/overview/#spans" target="_blank">Spans</a></h4>
-                <!-- unit of work with state defined by -->
+                <!-- unit of work/operation with state defined by -->
                 <ul>
                     <li>operation name</li>
                     <li>start/finish timestamp</li>
@@ -158,24 +168,40 @@
                     <li><a href="https://opentelemetry.io/docs/specs/otel/overview/#links-between-spans"
                            target="_blank">Link</a>s to causally-related spans <code>(0..*)</code>
                     </li>
-                    <li><a href="" target="_blank">SpanContext</a>
-                        <ul>
-                            <li>TraceId (worldwide unique, group all spans for specific trace)</li>
-                            <li>SpanId (globally unique)</li>
-                            <li>TraceFlags (options for a trace)</li>
-                            <li>Tracestate (k/v pairs; see <a href="https://www.w3.org/TR/trace-context/" target="_blank">W3C Trace Context</a>)</li>
-                        </ul>
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/overview/#spancontext" target="_blank">SpanContext</a>
                     </li>
+                </ul>
+            </section>
+            <section>
+                <!--<h4><a href="https://opentelemetry.io/docs/specs/otel/overview/#spans" target="_blank">Spans</a></h4>-->
+                <h5>SpanContext</h5>
+                <ul>
+                    <li>Trace ID (worldwide unique, group all spans for specific trace)</li>
+                    <li>Span ID (globally unique)</li>
+                    <li>Trace Flags (options for a trace)</li>
+                    <li>Tracestate (k/v pairs; vendor specific; see <a href="https://www.w3.org/TR/trace-context/"
+                                                                       target="_blank">W3C
+                        Trace Context</a>)
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>Baggage</h3>
+                <ul>
+                    <li>k/v store</li>
+                    <li>propagated alongside context
+                        <br>&rightarrow; available across service boundaries
+                    </li>
+                    <!-- TODO https://opentelemetry.io/docs/concepts/signals/baggage/#what-should-otel-baggage-be-used-for -->
+                    <li>&#x26A0; consider security (exposure/tampering)</li>
+                    <li>&#x2260; span/metrics/logs attributes</li>
                 </ul>
             </section>
             <!-- TODO trace example https://opentelemetry.io/docs/specs/otel/overview/#traces -->
             <section>
-                <!-- https://opentelemetry.io/docs/concepts/context-propagation/ -->
-                <h3>Context Propagation</h3>
-            </section>
-            <section>
                 <!-- TODO -->
             </section>
+            <!-- TODO https://opentelemetry.io/docs/specs/semconv/messaging/messaging-spans/ -->
             <section>
                 <h3>Instrumentation</h3>
                 <section>
@@ -226,6 +252,10 @@
                 <!-- https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder -->
                 <li><a href="https://signoz.io/comparisons/opentelemetry-trace-vs-span/">OpenTelemetry - Understanding
                     Traces vs. Spans</a></li>
+                <!-- TODO
+                    * https://embrace.io/blog/opentelemetry-challenges-handling-long-running-spans/
+                    * https://medium.com/hiver-engineering/distributed-tracing-for-asynchronous-workflows-using-opentelemetry-67e701685134
+                -->
             </ul>
         </section>
 
