@@ -17,7 +17,7 @@
     <div class="slides">
         <section>
             <h1><img src="/open-telemetry.svg" alt="OpenTelemetry" style="width: 4em"/></h1>
-            <h2>Retrofit</h2>
+            <h2 class="ff-coventry-garden" style="text-transform: none">Retrofit</h2>
         </section>
 
         <section>
@@ -173,7 +173,6 @@
                         <code style="font-size: 0.5em">(0..*)</code>
                     </li>
                     <li>
-                        <!-- tuple of timestamp, name, attribute(s) -->
                         <a href="https://opentelemetry.io/docs/specs/semconv/general/events/">Events</a> <code
                             style="font-size: 0.5em">(timestamp, name, attribute*)*</code></li>
                     <li>Status</li>
@@ -194,7 +193,7 @@
                     </li>
                     <li>
                         <span><code>TraceFlags</code></span>
-                        <span>1-bit mask; options for a trace: Sampled, Random</span>
+                        <span>bit mask; options for a trace: Sampled, Random</span>
                     </li>
                     <li>
                         <span><code>TraceState</code></span>
@@ -208,38 +207,28 @@
                 </ul>
             </section>
             <section>
-                <h3>Baggage</h3>
+                <h4>Baggage</h4>
                 <ul>
                     <li>k/v store</li>
                     <li>propagated alongside context
                         <br>&rightarrow; available across service boundaries
                     </li>
-                    <!-- TODO https://opentelemetry.io/docs/concepts/signals/baggage/#what-should-otel-baggage-be-used-for -->
-                    <li>&#x26A0; consider security (exposure/tampering)</li>
-                    <li>&#x2260; span/metrics/logs attributes</li>
+                    <li>&#x26A0; security</li>
+                    <li>&#x2260; { span, metrics, logs } attributes</li>
+                    <li>
+                        <a href="https://opentelemetry.io/docs/concepts/signals/baggage/#what-should-otel-baggage-be-used-for">what
+                            it should it be used for?</a></li>
                 </ul>
             </section>
             <section>
-                <!-- https://opentelemetry.io/docs/concepts/context-propagation/ -->
-                <h3>Context Propagation</h3>
+                <h3><a href="https://opentelemetry.io/docs/concepts/context-propagation/">Context Propagation</a></h3>
                 <ul>
-                    <!-- TODO <li>context</li>-->
-                    <li>correlate signals with each other</li>
-                    <!-- https://www.w3.org/TR/trace-context/ Trace Context - W3C Recommendation -->
-                    <!-- https://www.w3.org/TR/baggage/ Propagation format for distributed context: Baggage - W3C Candidate Recommendation -->
+                    <li>enables distributed tracing</li>
+                    <li>aim: correlate signals with each other</li>
+                    <li>propagation &rarr; moves context between services/processes</li>
                 </ul>
             </section>
             <!-- TODO trace example https://opentelemetry.io/docs/specs/otel/overview/#traces -->
-            <section>
-                <!-- TODO -->
-            </section>
-            <!-- TODO https://opentelemetry.io/docs/specs/semconv/messaging/messaging-spans/ -->
-            <section>
-                <h3>Instrumentation</h3>
-                <section>
-                    <!-- TODO -->
-                </section>
-            </section>
             <section>
                 <h3>History</h3>
                 <ul>
@@ -252,42 +241,38 @@
                     <li>May 11, 2026 &mdash; Graduated maturity level</li>
                 </ul>
             </section>
+            <!-- TODO
             <section>
                 <h3>Observability vs. Monitoring</h3>
-                <!-- TODO -->
             </section>
+            -->
         </section>
 
         <section>
             <h2>Resources</h2>
-            <ul>
-                <li>
-                    <a href="https://opentelemetry.io/">OpenTelemetry</a>
+            <ul style="font-size: smaller;">
+                <li><a target="_blank" href="https://opentelemetry.io/">OpenTelemetry</a></li>
+                <li>What is OpenTelemetry?
                     <ul>
-                        <li><a href="https://opentelemetry.io/docs/what-is-opentelemetry/">What is OpenTelemetry?</a>
+                        <li><a target="_blank" href="https://opentelemetry.io/docs/what-is-opentelemetry/">OpenTelemetry</a></li>
+                        <li><a target="_blank" href="https://newrelic.com/blog/observability/what-is-observability">New Relic</a></li>
+                        <li><a target="_blank" href="https://www.elastic.co/what-is/observability/">Elastic</a></li>
+                        <li><a target="_blank" href="https://www.dynatrace.com/news/blog/what-is-observability-2/">Ddynatrace</a></li>
+                        <li>
+                            <a target="_blank" href="https://grafana.com/docs/grafana-cloud/learn-and-build/get-started/learn/what-is-observability/">Grafana</a>
                         </li>
                     </ul>
                 </li>
-                <li><a href="https://newrelic.com/blog/observability/what-is-observability">What is observability? (new
-                    relic)</a></li>
-                <li><a href="https://www.elastic.co/what-is/observability/">What is observability? (elastic)</a></li>
-                <li><a href="https://www.dynatrace.com/news/blog/what-is-observability-2/">What is observability?
-                    (dynatrace)</a></li>
-                <li>
-                    <a href="https://grafana.com/docs/grafana-cloud/learn-and-build/get-started/learn/what-is-observability/">What
-                        is observability? (Grafana)</a></li>
-                <li><a href="https://www.elastic.co/blog/3-pillars-of-observability">The 3 pillars of observability:
+                <li><a target="_blank" href="https://www.elastic.co/blog/3-pillars-of-observability">The 3 pillars of observability:
                     Unified logs, metrics, and traces</a></li>
-                <li><a href="https://github.com/open-telemetry/opentelemetry-collector">OpenTelemetry Collector</a></li>
-                <li><a href="https://github.com/open-telemetry/opentelemetry-collector-contrib">OpenTelemetry Collector
-                    Contrib</a></li>
                 <!-- https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder -->
-                <li><a href="https://signoz.io/comparisons/opentelemetry-trace-vs-span/">OpenTelemetry - Understanding
+                <li><a target="_blank" href="https://signoz.io/comparisons/opentelemetry-trace-vs-span/">OpenTelemetry - Understanding
                     Traces vs. Spans</a></li>
                 <!-- TODO
                     * https://embrace.io/blog/opentelemetry-challenges-handling-long-running-spans/
                     * https://medium.com/hiver-engineering/distributed-tracing-for-asynchronous-workflows-using-opentelemetry-67e701685134
                 -->
+                <li>Font <a target="_blank" href="https://www.fontspace.com/coventry-garden-font-f9188"><span class="ff-coventry-garden">Coventry Garden</span></a></li>
             </ul>
         </section>
 

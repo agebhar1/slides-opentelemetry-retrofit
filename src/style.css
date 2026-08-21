@@ -2,6 +2,11 @@
     --list-style: outside url(/icons/open-telemetry-gray.svg);
 }
 
+@font-face {
+    font-family: 'Coventry Garden';
+    src: url(fonts/CoventryGardenNf-xx8O.ttf);
+}
+
 figure {
     figcaption {
         text-align: left;
@@ -73,3 +78,8 @@ figure {
         word-wrap: revert;
     }
 }
+
+.ff-coventry-garden {
+    font-family: 'Coventry Garden' !important;
+}
+
