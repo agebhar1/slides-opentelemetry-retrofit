@@ -56,13 +56,20 @@ figure {
 }
 
 .explanation {
+    span:first-child {
+        display: inline-block;
+        width: 51%;
+    }
     span + span {
-        /*border-bottom: 0.1em solid;*/
-        border-left: 0.1em solid;
+        display: inline-block;
+        border-left: 1px solid;
         border-radius: 0.1em 0 0 0.1em;
         font-size: x-small;
-        margin-left: 1em;
+        margin: 0;
         padding: 0.1em 0.3em;
         vertical-align: super;
+        width: calc(50% - 2em);
+        word-break: break-word;
+        word-wrap: revert;
     }
 }

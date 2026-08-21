@@ -50,9 +50,11 @@
         </section>
 
         <section>
-            <h2>'Agenda'</h2>
+            <h2>Outline</h2>
             <ul>
-                <li>What is OpenTelemetry?</li>
+                <li>What is <img src="/open-telemetry.svg" alt="OpenTelemetry"
+                                 style="width: 4em; margin: 0; vertical-align: center"/>?
+                </li>
                 <li>Setting the Scene</li>
                 <li>Retrofit</li>
                 <li>Show me Code</li>
@@ -67,7 +69,7 @@
                 <h3>What is OpenTelemetry?</h3>
             </section>
             <section>
-                <ul>
+                <ul style="list-style-position: inside;">
                     <li style="list-style: none;">
                         <figure>
                             <blockquote cite="https://opentelemetry.io/docs/what-is-opentelemetry/">
@@ -88,43 +90,42 @@
                     <li>vendor/tool-agnostic</li>
                 </ul>
             </section>
-            <!--
-            https://www.elastic.co/blog/3-pillars-of-observability
-
-            * What are metrics? (what's happening?)
-            * What are logs? (why is it happening?)
-            * What are traces? (where is it happening?)
-            -->
             <section>
                 <h3>Main Components</h3>
                 <ul>
-                    <li><a href="https://opentelemetry.io/docs/specs/otel/" target="_blank">Specification</a> API, SDK,
-                        Data<span
-                                class="badge badge-version">1.60.0</span></li>
-                    <li><a href="https://opentelemetry.io/docs/specs/otlp/" target="_blank">Protocol</a> (OTLP)<span
-                            class="badge badge-version">1.11.0</span></li>
-                    <li><a href="https://opentelemetry.io/docs/specs/semconv/" target="_blank">Semantic
-                        Conventions</a><span
-                            class="badge badge-version">1.44.0</span></li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/" target="_blank">
+                        Specification</a> API, SDK, Data
+                        <span class="badge badge-version">1.60.0 <span
+                                style="font-size: smaller; vertical-align: super">&starf;</span></span>
+                    </li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otlp/" target="_blank">
+                        Protocol</a> (OTLP)
+                        <span class="badge badge-version">1.11.0 <span
+                                style="font-size: smaller; vertical-align: super">&starf;</span></span>
+                    </li>
+                    <li><a href="https://opentelemetry.io/docs/specs/semconv/" target="_blank">
+                        Semantic Conventions</a>
+                        <span class="badge badge-version">1.44.0 <span
+                                style="font-size: smaller; vertical-align: super">&starf;</span></span>
+                    </li>
                     <li>API & SDKs</li>
                     <li><a href="https://opentelemetry.io/ecosystem/registry/" target="_blank">Library Ecosystem</a>
                     </li>
-                    <!-- implements instrumentation -->
-                    <li><a href="https://opentelemetry.io/docs/collector/">Collector</a></li><!-- proxy -->
-                </ul>
-            </section>
-            <section>
-                <!-- https://opentelemetry.io/docs/concepts/context-propagation/ -->
-                <h3>Context Propagation</h3>
-                <ul>
-                    <!-- TODO <li>context</li>-->
-                    <li>correlate signals with each other</li>
-                    <!-- https://www.w3.org/TR/trace-context/ Trace Context - W3C Recommendation -->
-                    <!-- https://www.w3.org/TR/baggage/ Propagation format for distributed context: Baggage - W3C Candidate Recommendation -->
+                    <li><a href="https://opentelemetry.io/docs/collector/">Collector</a></li>
+                    <li style="list-style: none; font-size: small; text-align: right">
+                        <span style="font-size: smaller; vertical-align: super">&starf;</span> 2026/08/21
+                    </li>
                 </ul>
             </section>
             <section>
                 <h3>Signals</h3>
+                <!--
+                https://www.elastic.co/blog/3-pillars-of-observability
+
+                * What are metrics? (WHAT is happening?)
+                * What are logs? (WHY is it happening?)
+                * What are traces? (WHERE is it happening?)
+                -->
                 <!-- https://opentelemetry.io/docs/concepts/signals/ -->
                 <ul class="explanation">
                     <li><span><a href="https://opentelemetry.io/docs/concepts/signals/traces/"
@@ -148,40 +149,61 @@
             <section>
                 <h4><a href="https://opentelemetry.io/docs/specs/otel/overview/#traces" target="_blank">Traces</a></h4>
                 <ul>
-                    <li>set of events across various components</li>
+                    <li>set of events</li><!-- across various components -->
                     <li>implicitly defined by spans</li>
-                    <li>trace &asymp; direct acyclic graph of spans</li>
-                    <li>requires concept of context propagation</li>
+                    <li>trace &asymp; DAG of spans</li>
+                    <li>req. concept of <span style="font-style: italic">Context Propagation</span></li>
                 </ul>
             </section>
             <section>
                 <h4><a href="https://opentelemetry.io/docs/specs/otel/overview/#spans" target="_blank">Spans</a></h4>
                 <!-- unit of work/operation with state defined by -->
                 <ul>
-                    <li>operation name</li>
-                    <li>start/finish timestamp</li>
-                    <li><a href="https://opentelemetry.io/docs/specs/otel/common/#attribute"
-                           target="_blank">Attribute</a>s <code>(0..*)</code>
-                    </li>
-                    <li>events <code>(0..*)</code></li><!-- tuple of timestamp, name, attribute(s) -->
-                    <li>parent's Span identifier <code>(0..1)</code></li>
-                    <li><a href="https://opentelemetry.io/docs/specs/otel/overview/#links-between-spans"
-                           target="_blank">Link</a>s to causally-related spans <code>(0..*)</code>
-                    </li>
+                    <li>name</li>
                     <li><a href="https://opentelemetry.io/docs/specs/otel/overview/#spancontext" target="_blank">SpanContext</a>
                     </li>
+                    <li>parent's span identifier <code style="font-size: 0.5em">(0..1)</code></li>
+                    <li>SpanKind</li>
+                    <li>start/finish timestamp</li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/common/#attribute"
+                           target="_blank">Attribute</a>s <code style="font-size: 0.5em">[(k/v)]*</code>
+                    </li>
+                    <li><a href="https://opentelemetry.io/docs/specs/otel/overview/#links-between-spans"
+                           target="_blank">Link</a>s to causally-related spans&nbsp;
+                        <code style="font-size: 0.5em">(0..*)</code>
+                    </li>
+                    <li>
+                        <!-- tuple of timestamp, name, attribute(s) -->
+                        <a href="https://opentelemetry.io/docs/specs/semconv/general/events/">Events</a> <code
+                            style="font-size: 0.5em">(timestamp, name, attribute*)*</code></li>
+                    <li>Status</li>
                 </ul>
             </section>
             <section>
-                <!--<h4><a href="https://opentelemetry.io/docs/specs/otel/overview/#spans" target="_blank">Spans</a></h4>-->
                 <h5>SpanContext</h5>
-                <ul>
-                    <li>Trace ID (worldwide unique, group all spans for specific trace)</li>
-                    <li>Span ID (globally unique)</li>
-                    <li>Trace Flags (options for a trace)</li>
-                    <li>Tracestate (k/v pairs; vendor specific; see <a href="https://www.w3.org/TR/trace-context/"
-                                                                       target="_blank">W3C
-                        Trace Context</a>)
+                <div style="font-size: smaller; margin-bottom: 0.5em">conforms to <a
+                        href="https://www.w3.org/TR/trace-context/" target="_blank">W3C Trace Context</a></div>
+                <ul class="explanation">
+                    <li>
+                        <span><code>TraceId</code></span>
+                        <span>16-byte array; worldwide unique; group all spans for specific trace</span>
+                    </li>
+                    <li>
+                        <span><code>SpanId</code></span>
+                        <span>8-byte array; globally unique</span>
+                    </li>
+                    <li>
+                        <span><code>TraceFlags</code></span>
+                        <span>1-bit mask; options for a trace: Sampled, Random</span>
+                    </li>
+                    <li>
+                        <span><code>TraceState</code></span>
+                        <span>k/v pairs; vendor specific; see
+                        <a href="https://www.w3.org/TR/trace-context/" target="_blank">W3C Trace Context</a></span>
+                    </li>
+                    <li>
+                        <span><code>IsRemote</code></span>
+                        <span>boolean; received from somewhere else or locally</span>
                     </li>
                 </ul>
             </section>
@@ -195,6 +217,16 @@
                     <!-- TODO https://opentelemetry.io/docs/concepts/signals/baggage/#what-should-otel-baggage-be-used-for -->
                     <li>&#x26A0; consider security (exposure/tampering)</li>
                     <li>&#x2260; span/metrics/logs attributes</li>
+                </ul>
+            </section>
+            <section>
+                <!-- https://opentelemetry.io/docs/concepts/context-propagation/ -->
+                <h3>Context Propagation</h3>
+                <ul>
+                    <!-- TODO <li>context</li>-->
+                    <li>correlate signals with each other</li>
+                    <!-- https://www.w3.org/TR/trace-context/ Trace Context - W3C Recommendation -->
+                    <!-- https://www.w3.org/TR/baggage/ Propagation format for distributed context: Baggage - W3C Candidate Recommendation -->
                 </ul>
             </section>
             <!-- TODO trace example https://opentelemetry.io/docs/specs/otel/overview/#traces -->
