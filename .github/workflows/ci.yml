@@ -1,0 +1,43 @@
+---
+name: CI
+# permissions: { }
+
+on: [ push ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    defaults:
+      run:
+        shell: bash
+    runs-on: ubuntu-22.04
+    name: Build presentation
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.20.0
+
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Vite build
+        run: npm run build
+
+      - name: Start Vite preview
+        run: nohup npm run preview &
+
+      - name: Create PDF
+        run: node src/pdf.js
+
+      - name: Stop Vite preview
+        run: pkill --signal TERM --exact "npm run preview"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: slides
+          path: slides.pdf
