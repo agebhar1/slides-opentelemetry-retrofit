@@ -16,7 +16,7 @@
 <div class="reveal">
     <div class="slides">
         <section>
-            <h1><img src="/open-telemetry.svg" alt="OpenTelemetry" style="width: 4em"/></h1>
+            <h1><img src="/images/open-telemetry.svg" alt="OpenTelemetry" style="width: 4em"/></h1>
             <h2 class="ff-coventry-garden" style="text-transform: none">Retrofit</h2>
             <h3 class="ff-coventry-garden" style="text-transform: none; font-size: inherit">a custom, legacy <code>C</code> middleware</h3>
         </section>
@@ -53,7 +53,7 @@
         <section>
             <h2>Outline</h2>
             <ul>
-                <li>What is <img src="/open-telemetry.svg" alt="OpenTelemetry"
+                <li>What is <img src="/images/open-telemetry.svg" alt="OpenTelemetry"
                                  style="width: 4em; margin: 0; vertical-align: center"/>?
                 </li>
                 <li>Setting the Scene</li>
@@ -113,8 +113,8 @@
                     <li><a href="https://opentelemetry.io/ecosystem/registry/" target="_blank">Library Ecosystem</a>
                     </li>
                     <li><a href="https://opentelemetry.io/docs/collector/">Collector</a></li>
-                    <li style="list-style: none; font-size: small; text-align: right">
-                        <span style="font-size: smaller; vertical-align: super">&starf;</span> 2026/08/21
+                    <li style="list-style: none; font-size: small; text-align: right; margin-top: 2em">
+                        <span style="font-size: smaller; vertical-align: super">&starf;</span> 2026/09/06
                     </li>
                 </ul>
             </section>
@@ -250,6 +250,92 @@
         </section>
 
         <section>
+            <section>
+                <h2>Setting the Scene</h2>
+            </section>
+            <section>
+                <h3 class="ff-coventry-garden" style="text-transform: none; font-size: inherit">a custom, legacy <code>C</code> middleware</h3>
+            </section>
+            <section>
+                <ul>
+                    <li>queue like middleware</li>
+                    <li>ops: dis-/connect, read/write</li>
+                    <li><code>C</code> code base <span style="font-size: small; vertical-align: super">&approx; 32 years</span></li>
+                    <li>single threaded, (Sun) TI-RPC <span style="font-size: small; vertical-align: super">&starf;</span></li>
+                    <li>single host (not distributed)</li>
+                    <li>clients uses dynamic library</li>
+                    <li style="list-style: none; font-size: small; text-align: right; margin-top: 2em">
+                        <span style="font-size: smaller; vertical-align: super">&starf;</span>&nbsp; in the following, replaced by UNIX domain socket
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>Challenges</h3>
+            </section>
+            <section>
+                <ul>
+                    <li>production critical</li>
+                    <li>single threaded</li>
+                    <li>no metadata/headers support</li>
+                    <li>message can't be changed</li>
+                    <li>context propagation?</li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Retrofit</h2>
+            </section>
+            <section>
+                <h3>Idea</h3>
+                    <div style="box-shadow: 0 0 4px 4px white; background-color: white;">
+                        <img src="/images/otel-gateway-sketch.excalidraw.png" alt="OpenTelemetry Gateway Sketch"/>
+                    </div>
+            </section>
+            <section>
+                <div style="display: flex; gap: 0.25em">
+                    <div style="flex: 1">
+                        <h4>Assumptions</h4>
+                        <ul style="font-size: smaller">
+                            <li>80/20 approach</li>
+                            <li><code>read(queue) == write(queue)</code></li>
+                            <li>next read finishes prev. one<br>
+                                <code>[ read(), write(), …, write() ],<br>[ read(), … ]</code>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="flex: 1">
+                        <h4>Key Facts</h4>
+                        <ul style="font-size: smaller">
+                            <li>IPC via Unix domain socket</li>
+                            <li>keep span context in k/v store</li>
+                            <li>identified by<br>
+                                <code>key(q) := q &compfn; hash(message + …)</code>
+                            </li>
+                            <li>
+                                context propagation<br>
+                                <code>ctx[key(q<sub>w</sub>)] := ctx[key(q<sub>r</sub>)]</code>
+                            </li>
+                            <li style="list-style: none; margin-top: 1em">
+                                <table>
+                                    <tr>
+                                        <td><code>q</code></td>
+                                        <td>queue</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>ctx</code></td>
+                                        <td>span context</td>
+                                    </tr>
+                                </table>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section>
             <h2>Resources</h2>
             <ul style="font-size: smaller;">
                 <li><a target="_blank" href="https://opentelemetry.io/">OpenTelemetry</a></li>
@@ -274,6 +360,7 @@
                     * https://medium.com/hiver-engineering/distributed-tracing-for-asynchronous-workflows-using-opentelemetry-67e701685134
                 -->
                 <li>Font <a target="_blank" href="https://www.fontspace.com/coventry-garden-font-f9188"><span class="ff-coventry-garden">Coventry Garden</span></a></li>
+                <li><a href="https://excalidraw.com/" target="_blank">Excalidraw</a></li>
             </ul>
         </section>
 
