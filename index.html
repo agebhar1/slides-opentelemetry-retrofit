@@ -96,7 +96,7 @@
                 <ul>
                     <li><a href="https://opentelemetry.io/docs/specs/otel/" target="_blank">
                         Specification</a> API, SDK, Data
-                        <span class="badge badge-version">1.60.0 <span
+                        <span class="badge badge-version">1.61.0 <span
                                 style="font-size: smaller; vertical-align: super">&starf;</span></span>
                     </li>
                     <li><a href="https://opentelemetry.io/docs/specs/otlp/" target="_blank">
@@ -114,7 +114,7 @@
                     </li>
                     <li><a href="https://opentelemetry.io/docs/collector/">Collector</a></li>
                     <li style="list-style: none; font-size: small; text-align: right; margin-top: 2em">
-                        <span style="font-size: smaller; vertical-align: super">&starf;</span> 2026/09/06
+                        <span style="font-size: smaller; vertical-align: super">&starf;</span> 2026/09/20
                     </li>
                 </ul>
             </section>
@@ -254,27 +254,55 @@
                 <h2>Setting the Scene</h2>
             </section>
             <section>
-                <h3 class="ff-coventry-garden" style="text-transform: none; font-size: inherit">a custom, legacy <code>C</code> middleware</h3>
+                <h3 class="ff-coventry-garden" style="text-transform: none; font-size: inherit">a custom, legacy <code style="font-size: 1em">C</code> middleware</h3>
             </section>
             <section>
+                <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                    <img src="/images/context.excalidraw.png" alt="Context"/>
+                </div>
+                <br>
                 <ul>
                     <li>queue like middleware</li>
-                    <li>ops: dis-/connect, read/write</li>
-                    <li><code>C</code> code base <span style="font-size: small; vertical-align: super">&approx; 32 years</span></li>
+                    <li><code style="font-size: 1em">C</code> code base <span style="font-size: small; vertical-align: super">&approx; 32 years</span></li>
                     <li>single threaded, (Sun) TI-RPC <span style="font-size: small; vertical-align: super">&starf;</span></li>
-                    <li>single host (not distributed)</li>
-                    <li>clients uses dynamic library</li>
+                    <!--<li>single host (not distributed)</li>-->
+                    <li>dynamic (client) library</li>
                     <li style="list-style: none; font-size: small; text-align: right; margin-top: 2em">
-                        <span style="font-size: smaller; vertical-align: super">&starf;</span>&nbsp; in the following, replaced by UNIX domain socket
+                        <span style="font-size: smaller; vertical-align: super">&starf;</span>&nbsp;in the following, replaced by UNIX domain socket
                     </li>
                 </ul>
+            </section>
+            <section>
+                <h3>Middleware API</h3>
+                <ul>
+                    <li><code>connect()</code>, <code>disconnect()</code></li>
+                    <li>shared I/O buffer/-size <span style="font-size: small; vertical-align: super">single threaded</span></li>
+                    <li><code>read(queue)</code></li>
+                    <li><code>write(queue)</code></li>
+                </ul>
+            </section>
+            <section>
+                <div style="display: flex; gap: 0.25em">
+                    <div style="flex: 1">
+                        <h4><code>read(queue)</code></h4>
+                        <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                            <img src="/images/api-read.excalidraw.png" alt="API read(queue)"/>
+                        </div>
+                    </div>
+                    <div style="flex: 1">
+                        <h4><code>write(queue)</code></h4>
+                        <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                            <img src="/images/api-write.excalidraw.png" alt="API write(queue)"/>
+                        </div>
+                    </div>
+                </div>
             </section>
             <section>
                 <h3>Challenges</h3>
             </section>
             <section>
                 <ul>
-                    <li>production critical</li>
+                    <li>mission-critical</li>
                     <li>single threaded</li>
                     <li>no metadata/headers support</li>
                     <li>message can't be changed</li>
