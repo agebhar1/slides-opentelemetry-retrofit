@@ -1,12 +1,16 @@
 ---
 name: CI
-# permissions: { }
+permissions:
+  contents: read
 
 on: [ push ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  VITE_PREVIEW_PORT: 4173
 
 jobs:
   build:
@@ -16,28 +20,36 @@ jobs:
     runs-on: ubuntu-22.04
     name: Build presentation
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout
+        uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
         with:
           node-version: 24.21.0
 
       - name: Install NPM dependencies
         run: npm install
 
+      - name: Check TypeScript
+        run: npm run type-check
+
       - name: Vite build
         run: npm run build
 
-      - name: Start Vite preview
+      - name: Run Vite preview
         run: nohup npm run preview &
 
-      - name: Create PDF
-        run: npm run pdf
+      - name: Create PDFs
+        run: |
+          npm run pdf -- "$(jq -r .name < package.json).pdf" ${VITE_PREVIEW_PORT} false
+          npm run pdf -- "$(jq -r .name < package.json).printable.pdf" ${VITE_PREVIEW_PORT} true
 
       - name: Stop Vite preview
         run: pkill --signal TERM --exact "npm run preview"
 
-      - uses: actions/upload-artifact@v7
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v7
         with:
           name: slides
-          path: slides.pdf
+          path: "*.pdf"

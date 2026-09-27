@@ -57,7 +57,14 @@ code {
 
 .github-mark {
     content: url('/icons/github-mark-white.png');
-    width: 0.95em;
+}
+
+.printable .github-mark {
+    content: url('/icons/github-mark.png');
+}
+
+.print-pdf .reveal a {
+    text-decoration: underline;
 }
 
 .badge {

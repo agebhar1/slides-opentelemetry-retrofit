@@ -23,17 +23,19 @@ function unhideSlides() {
 window.addEventListener('load', async () => {
     const urlSearchParams = new URLSearchParams(window.location.search)
     const isPrintPdf = urlSearchParams.get('print-pdf') !== null
+    const isPrintable = urlSearchParams.get('printable') !== null
     const editing = urlSearchParams.get('editing') !== null
 
     jsTrimWhitespace()
     if (editing || isPrintPdf) {
         unhideSlides()
     }
-    // if (isPrintPdf) {
-    //     document.documentElement.style.setProperty('--r-main-color', 'black');
-    //     document.documentElement.style.setProperty('--r-heading-color', 'black');
-    //     document.documentElement.style.setProperty('--r-background-color', 'white');
-    // }
+    if (isPrintPdf && isPrintable) {
+        document.documentElement.classList.add('printable')
+        document.documentElement.style.setProperty('--r-main-color', 'black');
+        document.documentElement.style.setProperty('--r-heading-color', 'black');
+        document.documentElement.style.setProperty('--r-background-color', 'white');
+    }
 
     Reveal.configure({
         pdfMaxPagesPerSlide: 1,
