@@ -1,8 +1,13 @@
 # Talk: OpenTelemetry - Retrofit a custom, legacy C middleware
 
-From the OpenTelemetry Homepage:
+The Cloud Native Computing Foundation (CNCF) graduated OpenTelemetry open source framework enables software to generate
+and transmit telemetry data in order to gain valuable insights.
 
-> **OpenTelemetry** is an open source observability framework for cloud native software. It provides a single set of APIs, libraries, agents, and collector services to capture distributed traces and metrics from your application.
+The telemetry data includes classic log messages, metrics and traces.
+
+This talk provides an overview of what OpenTelemetry is, with a focus on traces. The second part covers a real-world
+example in which a legacy, custom (proprietary), mission-critical C middleware is to be retrofitted for OpenTelemetry
+traces. A proof-of-concept implementation validates the idea through a live demo at the end of the presentation.
 
 ![Sketch](README.md.d/otel-gateway-sketch.excalidraw.png)
 

@@ -4,4 +4,4 @@
 dist/
 node_modules/
 
-slides*.pdf
+*.pdf

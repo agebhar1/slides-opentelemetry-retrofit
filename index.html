@@ -336,6 +336,9 @@
                     <div style="flex: 1">
                         <h4>Key Facts</h4>
                         <ul style="font-size: smaller">
+                            <li>keep middleware server & message untouched</li>
+                            <li>extend client by async send thread (w/ timeout)</li>
+                            <li>add gateway service</li>
                             <li>IPC via Unix domain socket</li>
                             <li>keep span context in k/v store</li>
                             <li>identified by<br>
@@ -364,18 +367,24 @@
             <section>
                 <div style="display: flex; gap: 0.25em">
                     <div style="flex: 1">
-                        <h4>Before</h4>
+                        <h4><code>read(queue)</code></h4>
                         <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
-                            <img src="/images/service-detail-before.excalidraw.png" alt="Service w/o OpenTelemetry"/>
+                            <img src="/images/api-read-extended.excalidraw.png" alt="API read(queue)"/>
                         </div>
                     </div>
                     <div style="flex: 1">
-                        <h4>After</h4>
+                        <h4><code>write(queue)</code></h4>
                         <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
-                            <img src="/images/service-detail-after.excalidraw.png" alt="Service w/ OpenTelemetry"/>
+                            <img src="/images/api-write-extended.excalidraw.png" alt="API write(queue)"/>
                         </div>
                     </div>
                 </div>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Demo / Proof-of-Concept</h2>
             </section>
         </section>
 
