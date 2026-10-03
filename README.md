@@ -11,6 +11,17 @@ traces. A proof-of-concept implementation validates the idea through a live demo
 
 ![Sketch](README.md.d/otel-gateway-sketch.excalidraw.png)
 
+> [!IMPORTANT]
+> This project uses a git submodule for supplementary source code. Clone this project with
+> ```bash
+> git clone --recurse-submodules <git-url>
+> ```
+> or
+> ```bash
+> git clone <git-url>
+> git submodule update --init --recursive
+> ```
+
 ## Slides
 
 Slides are build with [Vite](https://vitejs.dev/) and [reveal.js](https://revealjs.com/).

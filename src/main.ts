@@ -32,9 +32,13 @@ window.addEventListener('load', async () => {
     }
     if (isPrintPdf && isPrintable) {
         document.documentElement.classList.add('printable')
+        document.documentElement.style.setProperty('--code-background-color', 'white');
+        document.documentElement.style.setProperty('--code-box-shadow', '3px 3px 10px rgb(190 190 190)');
+        document.documentElement.style.setProperty('--code-color', 'black');
         document.documentElement.style.setProperty('--r-main-color', 'black');
         document.documentElement.style.setProperty('--r-heading-color', 'black');
         document.documentElement.style.setProperty('--r-background-color', 'white');
+        document.getElementById("screenshot-tempo-trace")?.style.setProperty('height', null);
     }
 
     Reveal.configure({

@@ -95,19 +95,13 @@
                 <h3>Main Components</h3>
                 <ul>
                     <li><a href="https://opentelemetry.io/docs/specs/otel/" target="_blank">
-                        Specification</a> API, SDK, Data
-                        <span class="badge badge-version">1.61.0 <span
-                                style="font-size: smaller; vertical-align: super">&starf;</span></span>
+                        Specification</a> API, SDK, Data <span class="badge badge-version">1.61.0 <span style="font-size: smaller; vertical-align: super">&starf;</span></span>
                     </li>
                     <li><a href="https://opentelemetry.io/docs/specs/otlp/" target="_blank">
-                        Protocol</a> (OTLP)
-                        <span class="badge badge-version">1.11.0 <span
-                                style="font-size: smaller; vertical-align: super">&starf;</span></span>
+                        Protocol</a> (OTLP) <span class="badge badge-version">1.11.0 <span style="font-size: smaller; vertical-align: super">&starf;</span></span>
                     </li>
                     <li><a href="https://opentelemetry.io/docs/specs/semconv/" target="_blank">
-                        Semantic Conventions</a>
-                        <span class="badge badge-version">1.44.0 <span
-                                style="font-size: smaller; vertical-align: super">&starf;</span></span>
+                        Semantic Conventions</a> <span class="badge badge-version">1.44.0 <span style="font-size: smaller; vertical-align: super">&starf;</span></span>
                     </li>
                     <li>API & SDKs</li>
                     <li><a href="https://opentelemetry.io/ecosystem/registry/" target="_blank">Library Ecosystem</a>
@@ -119,7 +113,63 @@
                 </ul>
             </section>
             <section>
-                <h3>Signals</h3>
+                <div style="display: flex; gap: 0.25em">
+                    <div style="flex: 1">
+                        <h4><a href="https://opentelemetry.io/docs/specs/semconv/" target="_blank">Semantic Conventions</a></h4>
+                        <ul style="font-size: 0.6em">
+                            <li><a href="https://opentelemetry.io/docs/specs/semconv/db/" target="_blank">Database</a></li>
+                            <li><a href="https://opentelemetry.io/docs/specs/semconv/http/" target="_blank">HTTP</a></li>
+                            <li><a href="https://opentelemetry.io/docs/specs/semconv/messaging/" target="_blank">Messaging</a></li>
+                            <li>GenAI
+                                <span style="font-size: small; vertical-align: super"><a href="https://github.com/open-telemetry/semantic-conventions-genai" target="_blank">moved</a>, &starf;</span>
+                            </li>
+                            <li>…</li>
+                        </ul>
+                    </div>
+                    <div style="flex: 1">
+                        <h5><a href="https://opentelemetry.io/docs/specs/semconv/registry/attributes/" target="_blank">Attribute Registry</a></h5>
+                        <h6 style="font-size: smaller">Attribute Examples</h6>
+                        <table style="font-size: 0.3em">
+                            <tr>
+                                <th>Key</th>
+                                <th>Stability</th>
+                                <th>Value Type</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td><code>k8s.cluster.name</code></td>
+                                <td><code>stable</code></td>
+                                <td><code>string</code></td>
+                                <td>The name of the cluster.</td>
+                            </tr>
+                            <tr>
+                                <td><code>db.query.text</code></td>
+                                <td><code>stable</code></td>
+                                <td><code>string</code></td>
+                                <td>The database query being executed.</td>
+                            </tr>
+                            <tr>
+                                <td><code>http.request.method</code></td>
+                                <td><code>stable</code></td>
+                                <td><code>string</code></td>
+                                <td>HTTP request method.</td>
+                            </tr>
+                            <tr>
+                                <td><code>messaging.destination.name</code></td>
+                                <td><code>development</code></td>
+                                <td><code>string</code></td>
+                                <td>The message destination name.</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div style="font-size: small; text-align: right; margin-top: 5em">
+                    <span style="font-size: smaller; vertical-align: super">&starf;</span>
+                    <a style="font-size: smaller" href="https://opentelemetry.io/blog/2026/genai-observability/" target="_blank">Inside the LLM Call: GenAI Observability with OpenTelemetry</a>
+                </div>
+            </section>
+            <section>
+                <h3><a href="https://opentelemetry.io/docs/concepts/signals/" target="_blank">Signals</a></h3>
                 <!--
                 https://www.elastic.co/blog/3-pillars-of-observability
 
@@ -127,22 +177,17 @@
                 * What are logs? (WHY is it happening?)
                 * What are traces? (WHERE is it happening?)
                 -->
-                <!-- https://opentelemetry.io/docs/concepts/signals/ -->
                 <ul class="explanation">
-                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/traces/"
-                                 target="_blank">Traces</a></span>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/traces/" target="_blank">Traces</a></span>
                         <span>path of a request</span>
                     </li>
-                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/metrics"
-                                 target="_blank">Metrics</a></span>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/metrics" target="_blank">Metrics</a></span>
                         <span>measurement captured at runtime</span>
                     </li>
-                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/logs"
-                                 target="_blank">Logs</a></span>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/logs" target="_blank">Logs</a></span>
                         <span>recording of an event</span>
                     </li>
-                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/baggage/"
-                                 target="_blank">Baggage</a></span>
+                    <li><span><a href="https://opentelemetry.io/docs/concepts/signals/baggage/" target="_blank">Baggage</a></span>
                         <span>contextual information passed between signals</span>
                     </li>
                 </ul>
@@ -317,9 +362,9 @@
             </section>
             <section>
                 <h3>Idea</h3>
-                    <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
-                        <img src="/images/otel-gateway-sketch.excalidraw.png" alt="OpenTelemetry Gateway Sketch"/>
-                    </div>
+                <div style="box-shadow: 0 0 2px 2px white; background-color: white;">
+                    <img src="/images/otel-gateway-sketch.excalidraw.png" alt="OpenTelemetry Gateway Sketch"/>
+                </div>
             </section>
             <section>
                 <div style="display: flex; gap: 0.25em">
@@ -385,14 +430,43 @@
         <section>
             <section>
                 <h2>Demo / Proof-of-Concept</h2>
+                <pre class="js:trim-whitespace">
+                    $ cd supplements/code/opentelemetry/retrofit/
+                    $ docker compose --profile '*' up --quiet-pull --detach --build
+                    …
+
+                    $ until docker compose exec --no-tty middleware curl --silent --fail http://tempo:3200/ready; do \
+                    &nbsp;   sleep 1; \
+                    &nbsp; done
+
+                    $
+                    ready
+
+                    $ open http://localhost:3000/explore
+
+                    $ docker compose logs middleware
+                    middleware-1  | listening on /tmp/middleware.sock
+
+                    $ compose exec middleware bash
+                    5334c6a916aa:~ OTEL_SERVICE_NAME=clientTwo client -r one -w two 1>clientTwo.log 2>&1 &
+                    5334c6a916aa:~ OTEL_SERVICE_NAME=clientThree client -r two -w three -d 1 1>clientThree.log 2>&1 &
+                    5334c6a916aa:~ seq 2 | OTEL_SERVICE_NAME=clientOne client -w one
+                    (stdin [getline]) -> one
+
+                    5334c6a916aa:~$ curl --silent --fail http://tempo:3200/api/search
+                    …
+
+                    5334c6a916aa:~$ exit
+                    $ docker compose --profile '*' down --volumes
+                </pre>
             </section>
             <section>
-                <code>
-                    <pre class="js:trim-whitespace">
-                        
-                    </pre>
-                </code>
+                <img id="screenshot-tempo-trace" style="height: 30vh" src="/images/screenshot-tempo-trace.png" alt="Tempo trace"/>
             </section>
+        </section>
+
+        <section>
+            <h2 class="ff-coventry-garden" style="text-transform: none">Questions?</h2>
         </section>
 
         <section>
