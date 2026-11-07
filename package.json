@@ -16,7 +16,7 @@
     "pdf": "node src/pdf.ts"
   },
   "devDependencies": {
-    "@types/node": "24.19.2",
+    "@types/node": "26.6.6",
     "npm-run-all2": "9.0.4",
     "puppeteer": "25.16.0",
     "reveal.js": "6.0.2",
