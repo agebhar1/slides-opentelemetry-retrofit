@@ -21,7 +21,7 @@
     "puppeteer": "25.17.0",
     "reveal.js": "6.0.2",
     "typescript": "7.0.2",
-    "vite": "8.3.5"
+    "vite": "8.3.8"
   },
   "allowScripts": {
     "puppeteer": true
